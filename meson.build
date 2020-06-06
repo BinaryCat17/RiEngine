@@ -1,8 +1,12 @@
 project('RiEngine', 'cpp', default_options : ['cpp_std=c++17'])
 
+cmake = import('cmake')
+signals_proj = cmake.subproject('signals')
+
+signals_dep = signals_proj.dependency('signals')
 sol2_dep = dependency('sol2', fallback: ['sol2', 'sol2_dep'])
 
-RiEngine_deps = [sol2_dep]
+RiEngine_deps = [sol2_dep, signals_dep]
 RiEngine_inc = include_directories('include')
 RiEngine_dep = declare_dependency(include_directories : RiEngine_inc, dependencies : RiEngine_deps)
 
