@@ -1,0 +1,16 @@
+./build
+./subprojects/assimp
+./subprojects/glfw
+./subprojects/gtest
+./subprojects/lua-5.3.4
+./subprojects/RiWindow
+./subprojects/signals
+./subprojects/RiUtil
+./subprojects/sol2
+./subprojects/magic_enum
+./subprojects/packagecache
+./subprojects/spdlog
+./subprojects/glew
+./subprojects/glm
+./subprojects/toml11
+./subprojects/cista
