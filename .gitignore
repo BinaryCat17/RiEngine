@@ -14,3 +14,5 @@
 ./subprojects/glm
 ./subprojects/toml11
 ./subprojects/cista
+./build/subprojects
+./build/.idea

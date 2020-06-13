@@ -1,0 +1,7 @@
+[fong.static]
+vs = 'static.vert'
+fs = 'fong.frag'
+
+[fong.animated]
+vs = 'animated.vert'
+fs = 'fong.frag'

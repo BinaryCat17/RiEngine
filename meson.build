@@ -1,14 +1,58 @@
-project('RiEngine', 'cpp', default_options : ['cpp_std=c++17'])
+project('RiEngine', 'cpp',
+    version : '1.0',
+    default_options : ['cpp_std=c++2a', 'warning_level=3'])
 
 cmake = import('cmake')
-signals_proj = cmake.subproject('signals')
 
-signals_dep = signals_proj.dependency('signals')
-sol2_dep = dependency('sol2', fallback: ['sol2', 'sol2_dep'])
+# deps --------------------------------------------------------------------------------------------
 
-RiEngine_inc = include_directories('include')
-RiEngine_deps = [sol2_dep, signals_dep]
-RiEngine_dep = declare_dependency(dependencies : RiEngine_deps)
+assimp = dependency('assimp', required : false)
+if not assimp.found()
+    assimp = cmake.subproject('assimp').dependency('assimp')
+endif
 
-executable('run', 'app/main.cpp',
- include_directories : RiEngine_inc, dependencies : RiEngine_deps)
+spdlog = dependency('spdlog', required : false)
+if not spdlog.found()
+    spdlog = cmake.subproject('spdlog').dependency('spdlog')
+endif
+
+glm = dependency('glm', required : false)
+if not glm.found()
+    glm = cmake.subproject('glm').dependency('glm')
+endif
+
+toml11 = dependency('toml11', required : false)
+if not toml11.found()
+    toml11 = cmake.subproject('toml11', cmake_options : '-Dtoml11_BUILD_TEST=OFF').dependency('toml11')
+endif
+
+cista = dependency('cista', required : false)
+if not cista.found()
+    cista = cmake.subproject('cista').dependency('cista')
+endif
+
+RiUtil = dependency('RiWindow', fallback : ['RiWindow', 'RiWindow_dep'])
+sol2 = dependency('sol2', fallback : ['sol2', 'sol2_dep'])
+gtest = dependency('gtest', fallback : ['gtest', 'gtest_dep'])
+glew = dependency('glew', fallback : ['glew', 'glew_dep'])
+
+# project -----------------------------------------------------------------------------------------
+
+deps = [RiUtil, sol2, assimp, gtest, spdlog, glew, glm, toml11, cista]
+inc = include_directories('src')
+
+lib = static_library('RiEngine',
+    'src/RiEngine/Format.cpp',
+    'src/RiEngine/Exception.cpp',
+    'src/RiEngine/ResourceLoader/MeshImporter.cpp',
+    cpp_pch : 'src/RiEngine/pch/pch.hpp',
+    install : true,
+    dependencies : deps,
+    include_directories : [inc, 'src/RiEngine/pch'])
+
+RiEngine_dep = declare_dependency(link_with : lib, include_directories : inc, dependencies : deps)
+
+# tests -------------------------------------------------------------------------------------------
+
+testMeshLoad = executable('testMeshLoader', 'tests/testMeshLoad.cpp', dependencies : RiEngine_dep)
+test('testMeshLoad', testMeshLoad, workdir : meson.source_root() / 'tests/game')

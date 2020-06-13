@@ -1,0 +1,5 @@
+[static]
+meshes = ['cube.rim']
+inPosition = 'R32G32B32SFloat'
+inNormal = 'R32G32B32SFloat'
+inTexCoord = 'R32G32SFloat'
