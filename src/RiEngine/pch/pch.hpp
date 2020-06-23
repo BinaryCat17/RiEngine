@@ -19,10 +19,14 @@
 #include <span>
 #include <RiUtil.hpp>
 #include <spdlog/spdlog.h>
+#include <ranges>
+#include <set>
+#include <concepts>
 
 namespace rise {
     namespace fs = std::filesystem;
     namespace time = std::chrono;
+    namespace ranges = std::ranges;
 
     using std::vector;
     using std::deque;
@@ -41,6 +45,8 @@ namespace rise {
     using std::exception;
     using std::range_error;
     using std::span;
+    using std::set;
+    using std::pair;
 }
 
 #endif
